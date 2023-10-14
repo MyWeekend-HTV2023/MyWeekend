@@ -47,7 +47,7 @@ function Dashboard() {
     <div class = ' flex items-center justify-end items-end'>
       <div class="inline-flex items-center justify-end">
         <div class="bg-blue-200 p-4 my-6 rounded-lg flex-1">
-          Hello! My name is Willy, your personal assistant. What would you like to do today?
+          <p class = "text-xl">Hello! My name is Willy, your personal trip advisor. What would you like to do today?</p>
         </div>
         <div class="w-3 overflow-hidden ">
           <div class="h-4 bg-blue-200 rotate-45 transform origin-top-left rounded-sm"></div>
@@ -58,15 +58,15 @@ function Dashboard() {
 
     <div class='py-20'>
       <a class='flex text-white justify-center items-center' href='/local'>
-          <button class="group relative h-20 w-60 overflow-hidden rounded-lg bg-white text-lg shadow">
+          <button class="group relative h-40 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
           <div class="absolute inset-0 w-3 bg-[#fb5383] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-          <span class="relative text-black group-hover:text-white">Plan my weekend</span>
+          <span class="relative text-2xl text-black group-hover:text-white">Plan my weekend</span>
         </button>
       </a>
       <a class= "flex text-white justify-center items-center py-20" href='/abroad'>
-        <button class="group relative h-20 w-60 overflow-hidden rounded-lg bg-white text-lg shadow">
+        <button class="group relative h-40 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
           <div class="absolute inset-0 w-3 bg-[#fb5383] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-          <span class="relative text-black group-hover:text-white">Plan a trip abroad</span>
+          <span class="relative  text-2xl text-black group-hover:text-white">Plan a trip abroad</span>
         </button>
       </a>
     </div>
