@@ -1,7 +1,5 @@
-import '../styles/Taskbar.css'
+import '../styles/Landing.css'
 import { useNavigate } from "react-router-dom";
-
-
 
 function Taskbar(){
     const navigate = useNavigate();
@@ -30,5 +28,25 @@ function Taskbar(){
     )
 }
 
+function Body(){
+    return(<>
+    <div className="welcome">
+        <div className="title">Welcome To <span>MyWeekend</span></div>
+        <img src="/worldwide.png" alt="" />
+    </div>
+    
+    </>)
+}
 
-export default Taskbar;
+function Info(){
+    return(<>
+        <div className="information">
+            <div className="text">
+            
+            </div>
+            <div className="cards"></div>
+        </div>
+    </>)
+}
+
+export {Taskbar, Body, Info}

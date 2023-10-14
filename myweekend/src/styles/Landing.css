@@ -1,5 +1,6 @@
 :root{
     --bg-taskbar: #28282B;
+    --bg-primary:  rgb(46,205,245);
 }
 
 .container{
@@ -47,4 +48,29 @@
 
 .buttons > button:hover{
     cursor: pointer;
+}
+
+.welcome{
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: 100vh;
+    padding: 7rem;
+    box-sizing: border-box;
+}
+
+.welcome .title{
+    color: black;
+    font-size: 5rem;
+}
+
+
+.title > span{
+    color: var(--bg-primary);
+}
+
+.information{
+    width: auto;
+    height: 100vh;
+    background-color: var(--bg-primary);
 }
