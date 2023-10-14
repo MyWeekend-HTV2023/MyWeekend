@@ -44,7 +44,7 @@ function Dashboard() {
 
     <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
 
-    <div class = ' flex items-center justify-end items-end'>
+    <div class = 'flex justify-end items-end'>
       <div class="inline-flex items-center justify-end">
         <div class="bg-blue-200 p-4 my-6 rounded-lg flex-1">
           <p class = "text-xl">Hello! My name is Willy, your personal trip advisor. What would you like to do today?</p>
