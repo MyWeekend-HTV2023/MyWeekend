@@ -11,17 +11,19 @@ import { Budget, GroupSize, Interest } from "../api/api.mjs";
 import { generateDayItinerary } from "./chatgpt.mjs";
 import { findPlace, getPlaceDetails } from "./googlemaps.mjs";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 
 const PORT = 3000;
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
 // Setup express-session
 var sess = {
   secret: process.env.SESSION_SECRET,
   cookie: {},
-  saveUninitialized: true,
+  saveUninitialized: false,
   resave: false,
   store: new MongoStore({
     client: getClient(),
