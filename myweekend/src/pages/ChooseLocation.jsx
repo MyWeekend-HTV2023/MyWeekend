@@ -37,33 +37,32 @@ function ChooseLocation() {
   }
 
   return (
-    <div className="h-screen w-screen bg-gray-900 flex flex-grow-0 flex-col justify-between">
+    <div className="h-screen w-screen bg-gray-900 flex flex-grow-0 flex-col justify-between overflow-auto">
       <div>
-        
-      <div class="inline-flex items-center w-full justify-between">
-      <div class="flex p-4">
-        <a href="/" class="flex items-center">
-            <img src={logo} class="h-20 mr-3"/>
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyWeekend</span>
-        </a>
-      </div>
-      <div class="flex px-5">
-        <ul class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-          <li>
-            <a href="/dashboard" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
-          </li>
-          <li>
-            <a href="/mytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Saved Trips</a>
-          </li>
-          <li>
-            <a href="/communitytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Community Dashboard</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+        <div class="inline-flex items-center w-full justify-between">
+          <div class="flex p-4">
+            <a href="/" class="flex items-center">
+              <img src={logo} class="h-20 mr-3" />
+              <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyWeekend</span>
+            </a>
+          </div>
+          <div class="flex px-5">
+            <ul class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <li>
+                <a href="/dashboard" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
+              </li>
+              <li>
+                <a href="/mytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Saved Trips</a>
+              </li>
+              <li>
+                <a href="/communitytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Community Dashboard</a>
+              </li>
+              <li>
+                <a href="#" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
+              </li>
+            </ul>
+          </div>
+        </div>
         <div className="w-full flex flex-row px-10 pb-10 items-center space-x-5 justify-end">
           <div className="w-1/4 bg-blue-300 p-4 rounded-lg relative items-center flex justify-end">
             <p className="text-lg font-semibold"><Typewriter text="Here's what I found for you!" delay={50} /></p>
@@ -157,12 +156,12 @@ function ChooseLocation() {
             )}
           </div>
           <div className="w-1/2 flex text-white px-8 pb-8">
-            <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyCAao5fwt_7o0UNWFHSsi6mMkljPpsHSdU&q=" + locations[locationIndex].name.split(' ').join('+') + ",Toronto+ON"} 
+            <iframe src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyCAao5fwt_7o0UNWFHSsi6mMkljPpsHSdU&q=" + locations[locationIndex].name.split(' ').join('+') + ",Toronto+ON"}
               className='w-full h-full rounded-xl' />
           </div>
         </div>
       </div>
-      <div className="flex justify-center pb-4">
+      <div className="flex justify-center p-4">
         <button className="w-64 bg-logopink rounded-lg p-4 text-white font-semibold text-lg hover:bg-altlogopink"
           onClick={handleSubmit}>
           Create Trip
