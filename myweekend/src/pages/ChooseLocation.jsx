@@ -39,12 +39,37 @@ function ChooseLocation() {
   return (
     <div className="h-screen w-screen bg-gray-900 flex flex-grow-0 flex-col justify-between">
       <div>
-        <div className="w-full flex flex-row p-10 items-center space-x-5">
-          <img className="h-20 w-20" src={logo} alt="MyWeekend Logo" />
-          <div className="w-1/4 bg-blue-300 p-4 rounded-lg relative items-center flex">
+        
+      <div class="inline-flex items-center w-full justify-between">
+      <div class="flex p-4">
+        <a href="/" class="flex items-center">
+            <img src={logo} class="h-20 mr-3"/>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyWeekend</span>
+        </a>
+      </div>
+      <div class="flex px-5">
+        <ul class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <li>
+            <a href="/dashboard" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
+          </li>
+          <li>
+            <a href="/mytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Saved Trips</a>
+          </li>
+          <li>
+            <a href="/communitytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Community Dashboard</a>
+          </li>
+          <li>
+            <a href="#" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+        <div className="w-full flex flex-row px-10 pb-10 items-center space-x-5 justify-end">
+          <div className="w-1/4 bg-blue-300 p-4 rounded-lg relative items-center flex justify-end">
             <p className="text-lg font-semibold"><Typewriter text="Here's what I found for you!" delay={50} /></p>
-            <div className="bg-blue-300 rotate-45 h-5 w-5 absolute ml-[-24px]"></div>
+            <div className="bg-blue-300 rotate-45 h-5 w-5 absolute mr-[-24px]"></div>
           </div>
+          <img className="h-20 w-20 " src={logo} alt="MyWeekend Logo" />
         </div>
         <div className="w-full flex flex-row">
           <div className="w-1/2">
