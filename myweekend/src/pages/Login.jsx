@@ -2,8 +2,10 @@ import React from 'react'
 
 function Login() {
   return (
-    <div>
-      Login
+    <div className="h-full w-full">
+      <div className="h-full w-1/2 bg-white">
+        Signin
+      </div>
     </div>
   )
 }
