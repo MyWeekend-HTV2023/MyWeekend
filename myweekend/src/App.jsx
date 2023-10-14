@@ -1,14 +1,18 @@
-import Landing from './pages/Landing'
-import Dashboard from './pages/Dashboard'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Local from './pages/Local'
-import Abroad from './pages/Abroad'
-import ChooseLocation from './pages/ChooseLocation'
-import LocalResult from './pages/LocalResult'
-import AbroadResult from './pages/AbroadResult'
-import CommunityTrips from './pages/CommunityTrips'
-import MyTrips from './pages/MyTrips'
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+
+import Landing from './pages/Landing.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Login from './pages/Login.jsx'
+import Signup from './pages/Signup.jsx'
+import Local from './pages/Local.jsx'
+import Abroad from './pages/Abroad.jsx'
+import ChooseLocation from './pages/ChooseLocation.jsx'
+import LocalResult from './pages/LocalResult.jsx'
+import AbroadResult from './pages/AbroadResult.jsx'
+import CommunityTrips from './pages/CommunityTrips.jsx'
+import MyTrips from './pages/MyTrips.jsx'
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
@@ -17,18 +21,18 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<div>Dashboard</div>} />
-          <Route path="/login" element={<div>Login</div>} />
-          <Route path="/signup" element={<div>Signup</div>} />
-          <Route path="/local" element={<div>Local</div>} />
-          <Route path="/abroad" element={<div>Abroad</div>} />
-          <Route path="/chooselocation" element={<div>ChooseLocation</div>} />
-          <Route path="/localresult" element={<div>LocalResult</div>} />
-          <Route path="/abroadresult" element={<div>AbroadResult</div>} />
-          <Route path="/communitytrips" element={<div>CommunityTrips</div>} />
-          <Route path="/communitytrips/:id" element={<div>CommunityTrip</div>} />
-          <Route path="/mytrips" element={<div>MyTrips</div>} />
+          <Route path="/" element={<Landing />}/>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/local" element={<Local />} />
+          <Route path="/abroad" element={<Abroad />} />
+          <Route path="/chooselocation" element={<ChooseLocation />} />
+          <Route path="/localresult" element={<LocalResult />} />
+          <Route path="/abroadresult" element={<AbroadResult />} />
+          <Route path="/communitytrips" element={<CommunityTrips />} />
+          <Route path="/communitytrips/:id" element={<CommunityTrips />} />
+          <Route path="/mytrips" element={<MyTrips />} />
         </Routes>
       </BrowserRouter>
     </>
