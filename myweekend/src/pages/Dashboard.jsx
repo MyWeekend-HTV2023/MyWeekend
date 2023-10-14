@@ -14,16 +14,16 @@ function Dashboard() {
       <div class="flex px-5">
         <ul class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
           <li>
-            <a href="#" class="block py-2 pl-3 pr-4 text-[#fb5383] md:bg-transparent md:text-[#fb5383] md:p-0 md:dark:text-[#fb5383]" aria-current="page">Home</a>
+            <a href="#" class="block py-2 pl-3 pr-4 text-logopink md:bg-transparent md:text-logopink md:p-0 md:dark:text-logopink" aria-current="page">Home</a>
           </li>
           <li>
-            <a href="/mytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 md:dark:hover:text-[#fb5383] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Saved Trips</a>
+            <a href="/mytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-logopink md:p-0 md:dark:hover:text-logopink dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Saved Trips</a>
           </li>
           <li>
-            <a href="/communitytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Community Dashboard</a>
+            <a href="/communitytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-logopink md:p-0 dark:text-white md:dark:hover:text-logopink dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Community Dashboard</a>
           </li>
           <li>
-            <a href="#" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fb5383] md:p-0 dark:text-white md:dark:hover:text-[#fb5383] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
+            <a href="#" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-logopink md:p-0 dark:text-white md:dark:hover:text-logopink dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
           </li>
         </ul>
       </div>
@@ -38,7 +38,7 @@ function Dashboard() {
                 </svg>
             </div>
             <input type="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for Users or Trips..." required></input>
-            <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-[#fb5383] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-[#fb5383] dark:hover:bg-[#741a63] dark:focus:ring-[#741a63]">Search</button>
+            <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-logopink hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-logopink dark:hover:bg-altlogopink dark:focus:ring-altlogopink">Search</button>
         </div>
     </form>
 
@@ -59,13 +59,13 @@ function Dashboard() {
     <div class='py-20'>
       <a class='flex text-white justify-center items-center' href='/local'>
           <button class="group relative h-40 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
-          <div class="absolute inset-0 w-3 bg-[#fb5383] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+          <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
           <span class="relative text-2xl text-black group-hover:text-white">Plan my weekend</span>
         </button>
       </a>
       <a class= "flex text-white justify-center items-center py-20" href='/abroad'>
         <button class="group relative h-40 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
-          <div class="absolute inset-0 w-3 bg-[#fb5383] transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+          <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
           <span class="relative  text-2xl text-black group-hover:text-white">Plan a trip abroad</span>
         </button>
       </a>

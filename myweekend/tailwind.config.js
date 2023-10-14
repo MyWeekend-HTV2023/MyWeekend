@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       colors: {
         'logopink': '#fb5383',
-        'altlogopink': "#741a63"
+        'altlogopink': '#741a63',
       },
     },
   },
