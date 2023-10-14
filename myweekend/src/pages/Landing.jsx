@@ -1,10 +1,11 @@
 import React from 'react'
+import Taskbar from '../components/Taskbar';
 
 function Landing() {
   return (
-    <div>
-      Landing
-    </div>
+    <>
+      <Taskbar />
+    </>
   )
 }
 

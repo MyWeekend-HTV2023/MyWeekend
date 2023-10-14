@@ -1,0 +1,50 @@
+:root{
+    --bg-taskbar: #28282B;
+}
+
+.container{
+    width: auto;
+    height: fit-content;
+    background-color: var(--bg-taskbar);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.info{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title{
+    color: white;
+    font-weight: 600;
+    font-size: 2rem ;
+}
+
+.info > img{
+    width: 30px;
+    height: auto;
+}
+
+.buttons{
+    width: 25%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttons > button{
+    border: none;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    font-weight: 600;
+    border-radius: 15px;
+
+}
+
+.buttons > button:hover{
+    cursor: pointer;
+}
