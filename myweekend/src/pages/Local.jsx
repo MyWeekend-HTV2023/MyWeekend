@@ -1,5 +1,6 @@
 import { React, useState }from 'react'
 import logo from '../assets/logo.png'
+import Typewriter from './components/Typewriter.jsx'
 
 function Local() {
   const [dist, setDist] = useState(null);
@@ -50,11 +51,16 @@ function Local() {
           </ul>
         </div>
       </div>
+      <div className="w-full flex flex-row px-10 pb-10 items-center space-x-5 justify-end">
+          <div className="w-1/4 bg-blue-300 p-4 rounded-lg relative items-center flex justify-end">
+            <p className="text-lg font-semibold"><Typewriter text="Before your weekend is planned, please tell me a bit about your interests." delay={50} /></p>
+            <div className="bg-blue-300 rotate-45 h-5 w-5 absolute mr-[-24px]"></div>
+          </div>
+          <img className="h-20 w-20 " src={logo} alt="MyWeekend Logo" />
+        </div>
       <div class="p-2 bg-gray-300 flex items-center flex-col rounded-lg shadow-2xl">
-        <p class="flex text-5xl py-5">What are your interests for your weekend?</p>
         <div class="p-2">
-        <p class = "flex justify-center p-2 text-2xl">Distance</p>
-        <div>
+        <div class='absolute invisible'>
           <ul class="grid w-full gap-6 md:grid-cols-3">
               <li>
                   <input type="radio" id="react-option" value="" class="hidden peer" required=""></input>
