@@ -1,5 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
+
 import '../styles/Landing.css'
 
 import logo from '../../assets/logo.png'
