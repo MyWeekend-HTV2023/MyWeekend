@@ -2,9 +2,12 @@ import React from 'react'
 
 function Login() {
   return (
-    <div className="h-full w-full">
-      <div className="h-full w-1/2 bg-white">
-        Login
+    <div className="mx-20 flex flex-row">
+      <div>
+        hi
+      </div>
+      <div>
+        hi
       </div>
     </div>
   )
