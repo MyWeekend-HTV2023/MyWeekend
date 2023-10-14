@@ -6,16 +6,18 @@
 }
 
 #root{
-overflow-y: hidden;
+    overflow-y: hidden;
 }
 
 .navigation{
-    width: 40%;
+    display: flex;
+    width: 80%;
     height: 100%;
     flex-direction: column;
     background-color: #28282B;
     padding: 2rem;
     box-sizing: border-box;
+    align-items: center;
 }
 
 .navigation .title{
@@ -25,18 +27,26 @@ overflow-y: hidden;
 }
 
 .navigation .container{
-   width: 100%;
+   width: 75%;
    height: fit-content;
    display: flex;
-   flex-direction: column;
+   justify-content: center;
    padding: 1rem;
+   gap: 1rem;
    box-sizing: border-box;
+   border-bottom: 2px solid white;
+}
+
+.container img{
+    width: 50px;
+    height: auto;
 }
 
 .day{
     color: white;
     font-weight: 500;
     font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
 .navigation .list{
@@ -62,15 +72,16 @@ overflow-y: hidden;
 }
 
 .card{
+    display: flex;
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 300px;
     background-color: white;
     margin-bottom: 1rem;
     border-radius: 15px;
-    padding: 1rem;
     box-sizing: border-box;
     z-index: 1;
+
 }
 
 .card .name{
@@ -78,4 +89,40 @@ overflow-y: hidden;
     font-weight: 500;
     border-bottom: 2px solid #28282B;
     margin-bottom: 1rem;
+}
+
+.map-holder{
+    width: 100%;
+}
+
+.map{
+    width: 100%;
+    height: 100vh;
+}
+
+.time{
+    position: absolute;
+    bottom: 8px;
+    right: 15px;
+}
+
+.items{
+    margin-left: .5rem;
+}
+
+.card-info{
+    display: flex;
+    flex-direction:column;
+    padding: 1rem;
+    box-sizing: border-box;
+    height: 66%;
+    width: 50%;
+}
+
+.card img{
+    width: 50%;
+    height: auto;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    object-fit:cover;
 }
