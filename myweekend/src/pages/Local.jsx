@@ -24,13 +24,6 @@ function Local() {
     }})
   }
 
-  const deleteByValue = value => {
-    setFruits(oldValues => {
-      return oldValues.filter(fruit => fruit !== value)
-    })
-  }
-
-
   return (
     <div class="min-h-screen bg-cover flex flex-col items-center border-gray-200 bg-gray-900 ">
       <div class="inline-flex items-center w-full justify-between">
@@ -43,7 +36,7 @@ function Local() {
         <div class="flex px-5">
           <ul class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <a href="#" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-logopink md:p-0 md:dark:hover:text-logopink dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
+              <a href="/dashboard" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-logopink md:p-0 md:dark:hover:text-logopink dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
             </li>
             <li>
               <a href="/mytrips" class="block py-2 pl-3 pr-4 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-logopink md:p-0 md:dark:hover:text-logopink dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Saved Trips</a>
@@ -57,8 +50,8 @@ function Local() {
           </ul>
         </div>
       </div>
-      <div class="p-2 bg-white flex items-center flex-col">
-        <p class="flex text-5xl">What are your interests for your weekend?</p>
+      <div class="p-2 bg-gray-300 flex items-center flex-col rounded-lg shadow-2xl">
+        <p class="flex text-5xl py-5">What are your interests for your weekend?</p>
         <div class="p-2">
         <p class = "flex justify-center p-2 text-2xl">Distance</p>
         <div>
