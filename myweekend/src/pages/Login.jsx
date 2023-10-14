@@ -12,7 +12,7 @@ function Login() {
 
   return (
     <div className="flex flex-row h-screen w-screen">
-      <div className="h-full w-1/2 flex overflow-clip">
+      <div className="h-full w-1/2 flex overflow-clip items-center justify-center">
         <Globe />
       </div>
       <div className="flex justify-center items-center h-full w-1/2">
