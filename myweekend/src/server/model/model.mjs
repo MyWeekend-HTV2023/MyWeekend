@@ -21,3 +21,36 @@ let userSchema = new mongoose.Schema({
   });
   
 export const User = mongoose.model('user', userSchema);
+
+let itineraryItemSchema = new mongoose.Schema({
+  name: {
+      type: String,
+      required: true
+  },
+  description: {
+      type: String,
+      required: true
+  },
+  rating: {
+    type: Number,
+    required: true
+  },
+  address: {
+    type: String,
+    required: true
+  },
+  website: {
+    type: String,
+    required: true
+  },
+  photo: {
+    type: String,
+    required: true
+  }
+});
+
+export const ItineraryItem = mongoose.model('ItineraryItem', itineraryItemSchema);
+
+export function getClient() {
+  return mongoose.connection.getClient();
+}
