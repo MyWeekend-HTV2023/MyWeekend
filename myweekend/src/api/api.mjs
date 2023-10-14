@@ -1,6 +1,6 @@
 export const Interest = {
     THRILL_SEEKING: {id: 'THRILL_SEEKING', message: 'thrill seeking'},
-    FUN_THINGS: {id: 'FUN_THINGS', message: 'fun things to do'}, // attractions
+    FUN_THINGS: {id: 'FUN_THINGS', message: 'fun things to do'},
     NATURE: {id: 'NATURE', message: 'nature and hiking'},
     BEACHES: {id: 'BEACHES', message: 'beaches and relaxation'},
     AMUSEMENT_PARKS: {id: 'AMUSEMENT_PARKS', message: 'amusement parks'},

@@ -50,3 +50,7 @@ let itineraryItemSchema = new mongoose.Schema({
 });
 
 export const ItineraryItem = mongoose.model('ItineraryItem', itineraryItemSchema);
+
+export function getClient() {
+  return mongoose.connection.getClient();
+}
