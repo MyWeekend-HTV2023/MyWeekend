@@ -1,12 +1,20 @@
 import '../styles/LocalResult.css'
 import { Plan } from "./List";
+import logo from '../../assets/logo.png'
+import { useNavigate } from "react-router-dom";
 
 function Navigation(){
+    const navigate = useNavigate();
+
+    const navigateToHome = () => {
+        navigate('/');
+    };
+
     return(<>
         <div className="navigation">
             <div className="container">
-                <div className="title">Itinerary Plan</div>
-
+                <img src={logo} alt="" onClick={navigateToHome} />
+                <div className="title">itinerary</div>
                
             </div>
             <div className="list">
@@ -20,8 +28,10 @@ function Navigation(){
 
 function Map(){
     return(<>
-        <div className="map">
-
+        <div className="map-holder">
+            <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCAao5fwt_7o0UNWFHSsi6mMkljPpsHSdU
+                    &q=CN+Tower,Toronto+ON" className='map'>
+            </iframe>
         </div>
     </>)
 

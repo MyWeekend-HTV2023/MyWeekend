@@ -42,14 +42,35 @@ function Body(){
 }
 
 function Info(){
+    const navigate = useNavigate();
+
+    const navigateToLocal = () => {
+        navigate('/local');
+    };
+    const navigateToAbroad = () => {
+        navigate('/abroad');
+    };
     return(<>
-        <div className="information">
+
+        <div className="information-container">
             <div className="text">
-            At MyWeekend, we leverage the power of AI to curate personalized travel experiences. By understanding your 
-            interests, we craft custom itinerary plans that ensure every trip is unique and unforgettable. Say goodbye to 
-            generic travel recommendations; say hello to tailored adventures designed just for you.
+                We leverage the power of AI to curate personalized travel experiences.
             </div>
-            <div className="cards"></div>
+            <div className="holder">
+                <div className="card">
+                    Build itinerary based on your preferences.
+                </div>
+                <div className="card">
+                    Save your favourite places and events.
+                </div>
+                <div className="card">
+                    Share your itinerary with friends and family.
+                </div>
+            </div>
+            <div className="button-container">
+                <button onClick={navigateToLocal}>Local Trip</button>
+                <button onClick={navigateToAbroad}>Abroad Trip</button>
+            </div>
         </div>
     </>)
 }
