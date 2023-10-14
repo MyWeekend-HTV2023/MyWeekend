@@ -1,6 +1,8 @@
-import '../styles/Landing.css'
-import { useNavigate } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+import '../styles/Landing.css'
+
+import logo from '../../assets/logo.png'
 function Taskbar(){
     const navigate = useNavigate();
 
@@ -14,9 +16,9 @@ function Taskbar(){
         navigate('/signup');
     };
     return(
-        <div className="container">
+        <div className="taskbar">
             <div className="info">
-                <img src="/worldwide.png"/>
+                <img src={logo}/>
                 <div className="title">MyWeekend</div>
             </div>
             <div className="buttons">
@@ -42,7 +44,9 @@ function Info(){
     return(<>
         <div className="information">
             <div className="text">
-            
+            At MyWeekend, we leverage the power of AI to curate personalized travel experiences. By understanding your 
+            interests, we craft custom itinerary plans that ensure every trip is unique and unforgettable. Say goodbye to 
+            generic travel recommendations; say hello to tailored adventures designed just for you.
             </div>
             <div className="cards"></div>
         </div>
