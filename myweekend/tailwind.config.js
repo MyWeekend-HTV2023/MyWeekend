@@ -6,8 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colours: {
+      colors: {
         'logopink': '#fb5383',
+        'altlogopink': "#741a63"
       },
     },
   },
