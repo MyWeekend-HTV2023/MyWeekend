@@ -6,10 +6,10 @@ import "./loadEnvironment.mjs";
 // import db from "./db/conn.mjs";
 import session from "express-session";
 import bcrypt from "bcrypt";
-import { User } from "./model/model.mjs";
+import { ItineraryItem, User } from "./model/model.mjs";
 import { Budget, GroupSize, Interest } from "../api/api.mjs";
 import { generateDayItinerary } from "./chatgpt.mjs";
-import { findPlace } from "./googlemaps.mjs";
+import { findPlace, getPlaceDetails } from "./googlemaps.mjs";
 
 const PORT = 3000;
 const app = express();
@@ -121,19 +121,37 @@ app.get("/api/generate/", body(['position', 'interests', 'budget', 'groupSize'])
   if (!itinerary || !itinerary.places || !(itinerary.places instanceof Array)) {
     res.sendStatus(500).end("Error generating itinerary!");
   }
-  for (const place of itinerary.places) {
-    if (!place.name || !place.description || Object.keys(place).length != 2) {
+  const finalPlaces = [];
+  for (const suggestion of itinerary.places) {
+    if (!suggestion.name || !suggestion.description || Object.keys(suggestion).length != 2) {
       res.sendStatus(500).end("Error generating itinerary!");
     }
-  }
 
-  const place = await findPlace(itinerary.places);
-  console.log(place);
-  if (!place) {
-    return res.status(500).end("Error generating itinerary!");
+    const place = await findPlace(suggestion.name);
+    if (!place || !place.place_id) {
+      continue;
+    }
+    const details = await getPlaceDetails(place.place_id);
+    if (!details) {
+      continue;
+    }
+    if (details.business_status != "OPERATIONAL") {
+      continue;
+    }
+
+    // TODO Optimize this, insert in bulk.
+    const finalPlace = await ItineraryItem.create({
+      name: details.name,
+      description: suggestion.description,
+      rating: details.rating,
+      address: details.formatted_address,
+      website: details.website,
+      photo: details.photos[0].photo_reference
+    });
+
+    finalPlaces.push(finalPlace)
   }
-  
-  res.status(200).json(itinerary).end();
+  res.status(200).json(finalPlaces).end();
 });
 
 export const server = createServer(app).listen(PORT, function (err) {

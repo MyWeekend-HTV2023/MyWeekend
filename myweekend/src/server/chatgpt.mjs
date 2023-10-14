@@ -3,7 +3,7 @@ import { Budget, Interest, PositionType } from "../api/api.mjs"
 
 const SYSTEM_MESSAGE =  "You are my personal assistant that recommends "+
 "places to go based on my interests, specific location, and the budget of what I "+
-"am willing to spend on each attraction. Please return the name of each place, "+
+"am willing to spend on each attraction. Please return the specific name of each place, "+
 "along with a short description of less than 30 words in json format. Only respond with "+
 "the json object, in the following format: {\"places\": [{\"name\": \"name\", "+
 "\"description\": \"description\"}, ...]}."
