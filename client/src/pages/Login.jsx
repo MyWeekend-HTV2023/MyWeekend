@@ -13,7 +13,7 @@ function Login() {
   function login(e, username, password) {
     e.preventDefault();
     
-    fetch(process.env.DEV ? 'http://localhost:3000/api/login' : '/api/login', {
+    fetch(window.location.href.startsWith("http://localhost") ? 'http://localhost:3000/api/login' : '/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
