@@ -12,6 +12,8 @@ import LocalResult from './pages/LocalResult.jsx'
 import CommunityTrips from './pages/CommunityTrips.jsx'
 import MyTrips from './pages/MyTrips.jsx'
 
+
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 function App() {

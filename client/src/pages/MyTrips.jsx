@@ -1,29 +1,42 @@
 import {React} from 'react'
 import Typewriter from './components/Typewriter.jsx'
 import logo from '../assets/logo.png'
+import { getClient } from '../../../server/model/model.mjs';
 
 function MyTrips() {
-  const itinararies = [
-    [{
-      id: 1,
-      name: "Canada's Wonderland",
-      description: "Canada's Wonderland is a 134-hectare theme park located in Vaughan, Ontario, a suburb approximately 25 kilometres north of Downtown Toronto. Opened in 1981 by the Taft Broadcasting Company and The Great-West Life Assurance Company as the first major theme park in Canada, it remains the country's largest.",
-      picture: "https://viewthevibe.com/wp-content/uploads/2021/08/Screen-Shot-2021-08-13-at-9.44.49-AM.png",
-      price: 45,
-      rating: 4.4,
-      hours: "10:00 AM - 8:00 PM"
-    }],
-    [{
-      id: 2,
-      name: "CN Tower",
-      description: "The CN Tower is a 553.3 m-high concrete communications and observation tower located in Downtown Toronto, Ontario, Canada. Built on the former Railway Lands, it was completed in 1976. Its name CN originally referred to Canadian National, the railway company that built the tower.",
-      picture: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toronto_-_ON_-_Toronto_Harbourfront7.jpg/1200px-Toronto_-_ON_-_Toronto_Harbourfront7.jpg",
-      price: 50,
-      rating: 4.6,
-      hours: "9:00 AM - 10:00 PM"
-    }]
-  ]
+  const [itineraries, setItineraries] = useState([]);
+  const [username, setUsername] = useState(null);
+  useEffect(() => {
+    fetch('http://localhost:3000/api/itineraries/')
+    .then((res) => res.json())  
+    .then((data) => {
+        setItineraries(data.itineraries)
+      })
+    .catch((err) => {
+        console.log(err.message);
+      });
 
+    fetch('http://localhost:3000/api/user')
+    .then((res) => res.json())
+    .then((data) => {
+      setUsername(data.username);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    })
+  }, []);
+let filteredItineraries = [];
+  useEffect(() => {
+for (let i= 0; i<itineraries.length; i++) {
+    console.log(itineraries[i].user_id);
+    console.log(username);
+    if (itineraries[i].user_id == username ) {
+        filteredItineraries = [...filteredItineraries, itineraries[i]];
+    }
+  }
+
+  }, [username])
+  
   return (
     <div className="h-screen w-screen bg-gray-900 flex flex-grow-0 flex-col">
       <div class="inline-flex items-center w-full justify-between">
@@ -58,19 +71,19 @@ function MyTrips() {
           <img className="h-20 w-20 " src={logo} alt="MyWeekend Logo" />
         </div>
         <div class="grid w-full gap-6 md:grid-cols-4 p-5 ">
-      {itinararies.map((loc) => (
-        <a href={'/communitytrips/'+loc[0].id}>
+      {filteredItineraries.map((loc) => (
+        <a href={'/mytrips/'+loc.places[0].id}>
           <div className="w-96 rounded-lg overflow-hidden bg-white group">
               <div className="flex items-center justify-center w-full aspect-h-1 aspect-w-1 overflow-hidden bg-gray-200 lg:aspect-none h-64">
                 <img
-                  src={loc[0].picture}
-                  alt={loc[0].name}
+                  src={loc.places[0].photo}
+                  alt={loc.places[0].id}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
                 <div className="p-4 space-y-1">
-                  <h3 className="text-lg font-semibold line-clamp-1">{loc[0].name}</h3>
-                  <p className="text-sm text-gray-500 line-clamp-2">{loc[0].description}</p>
+                  <h3 className="text-lg font-semibold line-clamp-1">{loc.places[0].name}</h3>
+                  <p className="text-sm text-gray-500 line-clamp-2">{loc.places[0].description}</p>
                   <div className="flex items-center justify-between pt-4">
                   </div>
                 </div>

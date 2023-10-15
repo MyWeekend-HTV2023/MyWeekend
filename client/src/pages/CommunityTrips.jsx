@@ -3,27 +3,18 @@ import Typewriter from './components/Typewriter.jsx'
 import logo from '../assets/logo.png'
 
 function CommunityTrips() {
-  const itinararies = [
-    [{
-      id: 1,
-      name: "Canada's Wonderland",
-      description: "Canada's Wonderland is a 134-hectare theme park located in Vaughan, Ontario, a suburb approximately 25 kilometres north of Downtown Toronto. Opened in 1981 by the Taft Broadcasting Company and The Great-West Life Assurance Company as the first major theme park in Canada, it remains the country's largest.",
-      picture: "https://viewthevibe.com/wp-content/uploads/2021/08/Screen-Shot-2021-08-13-at-9.44.49-AM.png",
-      price: 45,
-      rating: 4.4,
-      hours: "10:00 AM - 8:00 PM"
-    }],
-    [{
-      id: 2,
-      name: "CN Tower",
-      description: "The CN Tower is a 553.3 m-high concrete communications and observation tower located in Downtown Toronto, Ontario, Canada. Built on the former Railway Lands, it was completed in 1976. Its name CN originally referred to Canadian National, the railway company that built the tower.",
-      picture: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toronto_-_ON_-_Toronto_Harbourfront7.jpg/1200px-Toronto_-_ON_-_Toronto_Harbourfront7.jpg",
-      price: 50,
-      rating: 4.6,
-      hours: "9:00 AM - 10:00 PM"
-    }]
-  ]
-
+  const [itineraries, setItineraries] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3000/api/itineraries/')
+    .then((res) => res.json())  
+    .then((data) => {
+        setItineraries(data.itineraries)
+      })
+    .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+ 
   return (
     <div className="h-screen w-screen bg-gray-900 flex flex-grow-0 flex-col">
       <div class="inline-flex items-center w-full justify-between">
@@ -52,14 +43,14 @@ function CommunityTrips() {
     </div>
         <div className="w-full flex flex-row px-10 pb-10 items-center space-x-5 justify-end">
           <div className="w-1/4 bg-blue-300 p-4 rounded-lg relative items-center flex justify-end">
-            <p className="text-lg font-semibold"><Typewriter text="Here are your saved trips, click one to review it!" delay={50} /></p>
+            <p className="text-lg font-semibold"><Typewriter text="Here are the top saved trips, click one to review it!" delay={50} /></p>
             <div className="bg-blue-300 rotate-45 h-5 w-5 absolute mr-[-24px]"></div>
           </div>
           <img className="h-20 w-20 " src={logo} alt="MyWeekend Logo" />
         </div>
         <div class="grid w-full gap-6 md:grid-cols-4 p-5 ">
-      {itinararies.map((loc) => (
-        <a href={'/communitytrips/'+loc[0].id}>
+      {itineraries.map((loc) => (
+        <a href={'/communitytrips/'+loc.places[0].id}>
           <div className="w-96 rounded-lg overflow-hidden bg-white group">
               <div className="flex items-center justify-center w-full aspect-h-1 aspect-w-1 overflow-hidden bg-gray-200 lg:aspect-none h-64">
                 <img
