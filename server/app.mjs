@@ -25,7 +25,7 @@ app.use(cors({
   credentials: true,
   exposedHeaders: ['SET-COOKIE']
 }));
-app.use(express.static('./api/download/'));
+app.use(express.static('./static/'));
 
 // Setup express-session
 var sess = {
@@ -173,7 +173,7 @@ function resolvePlace(coordinates, suggestion) {
     downloadImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400`+
       `&photoreference=${details.photos[0].photo_reference}`+
       `&key=${process.env.GOOGLE_MAPS_API_KEY_1}`,
-    `./api/download/download/${details.photos[0].photo_reference}`)
+    `./static/api/image/${details.photos[0].photo_reference}`)
 
     if (!details.wheelchair_accessible_entrance) {
         details.wheelchair_accessible_entrance = false;
@@ -196,7 +196,7 @@ function resolvePlace(coordinates, suggestion) {
       rating: details.rating,
       address: details.formatted_address,
       website: details.website,
-      photo: `/download/${details.photos[0].photo_reference}`,
+      photo: `/api/image/${details.photos[0].photo_reference}`,
       accessibility: details.wheelchair_accessible_entrance,
       hours: openingHours,
       place_id: place.place_id
