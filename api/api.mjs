@@ -3,7 +3,7 @@ export const Interest = {
     FUN_THINGS: {id: 'FUN_THINGS', message: 'fun things to do'},
     NATURE: {id: 'NATURE', message: 'nature and hiking'},
     BEACHES: {id: 'BEACHES', message: 'beaches and relaxation'},
-    AMUSEMENT_PARKS: {id: 'AMUSEMENT_PARKS', message: 'amusement parks'},
+    AMUSEMENT_PARK: {id: 'AMUSEMENT_PARK', message: 'amusement parks'},
     SIGHTSEEING: {id: 'SIGHTSEEING', message: 'sightseeing'},
     FAMILY_FUN: {id: 'FAMILY_FUN', message: 'family fun'},
     HOTELS: {id: 'HOTELS', message: 'hotels'}

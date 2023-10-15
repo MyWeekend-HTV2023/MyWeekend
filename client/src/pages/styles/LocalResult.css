@@ -1,3 +1,9 @@
+:root{
+    --bg-primary: rgb(17 24 39);
+    --bg-logo: #fb5383;
+    --bg-alt: #741a63;
+}
+
 .result{
     display: flex;
     width: auto;
@@ -14,7 +20,7 @@
     width: 80%;
     height: 100%;
     flex-direction: column;
-    background-color: #28282B;
+    background-color: var(--bg-primary);
     padding: 2rem;
     box-sizing: border-box;
     align-items: center;
@@ -44,8 +50,8 @@
 
 .day{
     color: white;
-    font-weight: 500;
-    font-size: 2rem;
+    font-weight: 600;
+    font-size: 3rem;
     margin-bottom: 1rem;
 }
 
@@ -86,7 +92,7 @@
 
 .card .name{
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 700;
     border-bottom: 2px solid rgb(31, 65, 140);
     margin-bottom: 1rem;
 }
@@ -125,6 +131,10 @@
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
     object-fit:cover;
+}
+
+.card img{
+    cursor: pointer;
 }
 
 .holder{

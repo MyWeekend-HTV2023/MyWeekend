@@ -14,6 +14,7 @@ import MongoStore from "connect-mongo";
 import cors from "cors";
 import downloadImage from "./util/file.mjs";
 import { nanoid } from 'nanoid';
+import { Query } from "mongoose";
 
 const PORT = 3000;
 const app = express();
@@ -239,6 +240,18 @@ app.get("/api/picture/:id", async function (req, res, next) {
   res.status(200).json({username: user.username}).end();
   }
 );
+
+app.get("/api/itinerary/", query("itineraryID").isMongoId(), async function (req, res, next) {
+  if (!validationResult(req).isEmpty()) {
+    return res.status(400).json(validationResult(req).array()).end();
+  }
+  const itinerary = await Itinerary.findById(req.query.itineraryID);
+  if (!itinerary) {
+    return res.status(404).end("Itinerary not found!");
+  }
+  res.status(200).json(itinerary).end();
+});
+
 
 export const server = createServer(app).listen(PORT, function (err) {
   if (err) console.log(err);
