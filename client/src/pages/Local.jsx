@@ -1,11 +1,38 @@
 import { React, useState }from 'react'
 import logo from '../assets/logo.png'
+import Typewriter from './components/Typewriter.jsx'
+
+import { Interest, Budget, GroupSize, DayItineraryRequest, Position, PositionType} from '../../../api/api.mjs';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Local() {
-  const [dist, setDist] = useState(null);
+  const [location, setLocation] = useState(null);
   const [price, setPrice] = useState(null);
   const [interests, setInterests] = useState([]);
   const [group, setGroup] = useState(null);
+  
+  const navigate = useNavigate();
+
+  function send() {
+    let position = new Position("STRING","Toronto, Canada");
+
+    let request = new DayItineraryRequest(position, interests, price, GroupSize[group]);
+    console.log({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
+    fetch('http://localhost:3000/api/generate/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
+    }).then(response => {
+      if (response.status === 200) {
+        navigate('/chooselocation');
+      } else {
+        window.alert("Invalid credentials");
+      }});
+  }
 
   const handlePrice = (str) => {
     setPrice(str)
@@ -13,16 +40,25 @@ function Local() {
   const handleGroup = (str) => {
     setGroup(str)
   }
-  const handleInterest = (str) => {
-    interests.some(element => {
-      if (element !== str) {
-        setInterests([str, ...interests])
-      } else{
-        setInterests(interests => {
-          return interests.filter(element !== str)
-      })
-    }})
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+      alert("Geolocation is not supported by this browser.");
+    }
   }
+
+  const showPosition = (position) => {
+    setLocation({"lat": position.coords.latitude, "lng": position.coords.longitude});
+  }
+
+  const printTest = () => {
+    const filter = interests.map((interest) => Interest[interest]);
+    let position = new Position( PositionType.COORDINATES,location);
+    console.log(position, Budget[price], filter, GroupSize[group]);
+  }
+
 
   return (
     <div class="min-h-screen bg-cover flex flex-col items-center border-gray-200 bg-gray-900 ">
@@ -50,11 +86,19 @@ function Local() {
           </ul>
         </div>
       </div>
+      <div className="w-full flex flex-row px-10 pb-10 items-center space-x-5 justify-end">
+          <div className="w-1/4 bg-blue-300 p-4 rounded-lg relative items-center flex justify-end">
+            <p className="text-lg font-semibold"><Typewriter text="Before I plan your itinerary for you, can you tell me a bit about yourself?" delay={50} /></p>
+            <div className="bg-blue-300 rotate-45 h-5 w-5 absolute mr-[-24px]"></div>
+          </div>
+          <img className="h-20 w-20 " src={logo} alt="MyWeekend Logo" />
+        </div>
       <div class="p-2 bg-gray-300 flex items-center flex-col rounded-lg shadow-2xl">
-        <p class="flex text-5xl py-5">What are your interests for your weekend?</p>
         <div class="p-2">
-        <p class = "flex justify-center p-2 text-2xl">Distance</p>
-        <div>
+          <div class="flex justify-center text-2xl p-2">
+            <button onClick={getLocation}>Share Location</button>
+          </div>
+        <div class='absolute invisible'>
           <ul class="grid w-full gap-6 md:grid-cols-3">
               <li>
                   <input type="radio" id="react-option" value="" class="hidden peer" required=""></input>
@@ -413,8 +457,8 @@ function Local() {
             </ul>
           </div>
           </div>
-        <a class= "flex text-white justify-center items-center py-5" href='/abroad'>
-        <button class="border-b border-logopink group relative h-20 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
+        <a class= "flex text-white justify-center items-center py-5">
+        <button onClick={send} class="border-b border-logopink group relative h-20 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
           <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
           <span class="relative  text-2xl text-black group-hover:text-white">Plan my weekend!</span>
         </button>
