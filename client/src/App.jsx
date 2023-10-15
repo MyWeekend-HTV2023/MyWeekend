@@ -2,6 +2,9 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import Landing from './pages/Landing.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Login from './pages/Login.jsx'
@@ -13,6 +16,8 @@ import LocalResult from './pages/LocalResult.jsx'
 import AbroadResult from './pages/AbroadResult.jsx'
 import CommunityTrips from './pages/CommunityTrips.jsx'
 import MyTrips from './pages/MyTrips.jsx'
+
+
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 

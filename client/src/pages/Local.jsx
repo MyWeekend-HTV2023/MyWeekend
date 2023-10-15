@@ -21,12 +21,12 @@ function Local() {
 
     let request = new GenerateRequest(position, interests, price, group);
     console.log({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
-    fetch('http://localhost:3000/api/generate/', {
+    fetch(process.env.DEV ? 'http://localhost:3000/api/generate/' : '/api/generate', {
       credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': process.env.DEV ? 'http://localhost:3000' : 'https://myweekend.app',
       },
       body: JSON.stringify({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
     }).then(response => {

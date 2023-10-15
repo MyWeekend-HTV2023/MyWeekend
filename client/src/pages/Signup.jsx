@@ -14,7 +14,7 @@ function Signup() {
   function signup(e, username, password) {
     e.preventDefault();
 
-    fetch('http://localhost:3000/api/register', {
+    fetch(process.env.DEV ? 'http://localhost:3000/api/register' : '/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

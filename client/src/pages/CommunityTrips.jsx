@@ -59,7 +59,7 @@ function CommunityTrips() {
         </div>
         <div class="grid w-full gap-6 md:grid-cols-4 p-5 ">
       {itinararies.map((loc) => (
-        <a href={'/communitytrips/'+loc[0].id}>
+        <a href={'/communitytrips/'+loc.places[0].id}>
           <div className="w-96 rounded-lg overflow-hidden bg-white group">
               <div className="flex items-center justify-center w-full aspect-h-1 aspect-w-1 overflow-hidden bg-gray-200 lg:aspect-none h-64">
                 <img

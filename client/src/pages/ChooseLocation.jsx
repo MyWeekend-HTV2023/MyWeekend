@@ -68,12 +68,12 @@ function ChooseLocation() {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/refine/', {
+    fetch(process.env.DEV ? 'http://localhost:3000/api/refine/': '/api/refine', {
       credentials: 'include',
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
+        'Access-Control-Allow-Origin': process.env.DEV ? 'http://localhost:3000': 'https://myweekend.app'
       },
     }).then((response) => {
       if (response.status === 200) {
@@ -93,12 +93,12 @@ function ChooseLocation() {
   }
 
   function postRefine() {
-    fetch('http://localhost:3000/api/refine/', {
+    fetch(process.env.DEV ? 'http://localhost:3000/api/refine/' : '/api/refine', {
       credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
+        'Access-Control-Allow-Origin': process.env.DEV ? 'http://localhost:3000' : 'https://myweekend.app'
       },
       body: JSON.stringify({
         placeIDs: chosenLocations.map((location) => location._id)
