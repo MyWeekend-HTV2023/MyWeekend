@@ -7,6 +7,7 @@ export async function findPlace(position, name) {
     params: {
       input: name,
       inputtype: 'textquery',
+      locationbias: `point:${position.lat},${position.lng}`,
       key: process.env.GOOGLE_MAPS_API_KEY_1,
     },
     timeout: 1000,
@@ -60,17 +61,40 @@ export async function getAddressFromCoords(coordinates) {
     return null;
   }
   let country = '';
+  let state = '';
   let city = '';
   for (const component of result.address_components) {
     if (component.types.includes("country")) {
       country = component.long_name;
     }
+    if (component.types.includes("administrative_area_level_1")) {
+      state = component.long_name;
+    }
     if (component.types.includes("locality")) {
       city = component.long_name;
     }
   }
-  if (city == '' || country == '') {
+  if (city == '' || state == '' || country == '') {
     return null;
   }
-  return `${city}, ${country}`;
+  return `${city}, ${state}, ${country}`;
+}
+
+export async function getCoordsFromAddress(address) {
+  const res = await client.geocode({
+    params: {
+      address: address,
+      key: process.env.GOOGLE_MAPS_API_KEY_1,
+    },
+    timeout: 2000,
+  });
+  if (res.data.status !== "OK") {
+    // console.log(res.data);
+    return null;
+  }
+  result = res.data.results[0];
+  if (!result || !result.geometry || !result.geometry.location) {
+    return null;
+  }
+  return result.geometry.location;
 }

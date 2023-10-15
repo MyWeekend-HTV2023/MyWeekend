@@ -149,6 +149,9 @@ app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']
         details.wheelchair_accessible_entrance = false;
     }
 
+    // weekday = new Date().getDay(); // 0 = sunday -> 6 = saturday
+
+    // TODO Add opening/closing hours...
     finalPlaces.push({
       _id: nanoid(12),
       name: details.name,
@@ -157,13 +160,25 @@ app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']
       address: details.formatted_address,
       website: details.website,
       photo: `/api/download/${details.photos[0].photo_reference}`,
-      wheelchair: details.wheelchair_accessible_entrance 
+      accessibility: details.wheelchair_accessible_entrance,
+      // hours: details.current_opening_hours.weekday_text[weekday] // 0 = monday -> 6 = sunday
     })
   }
 
   console.log(finalPlaces);
   req.session.generate = finalPlaces;
-  res.status(200).json(finalPlaces).end();
+  res.status(204).end();
+});
+
+app.get("/get/refine/", async function (req, res, next) {
+  if (!validationResult(req).isEmpty()) {
+    return res.status(400).json(validationResult(req).array()).end();
+  }
+
+  if (!req.session.generate) {
+    return res.sendStatus(404).end();
+  }
+  res.status(200).json({places: req.session.generate}).end();
 });
 
 app.post("/api/refine/", body(['placeIDs']).notEmpty().isArray(), async function (req, res, next) {

@@ -47,7 +47,7 @@ let itineraryItemSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  wheelchair: {
+  accessibility: {
     type: Boolean,
     required: true
   }
