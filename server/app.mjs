@@ -196,9 +196,7 @@ function resolvePlace(coordinates, suggestion) {
       rating: details.rating,
       address: details.formatted_address,
       website: details.website,
-      photo: window.location.href.startsWith("http://localhost") ? 
-        `http://localhost:3000/download/${details.photos[0].photo_reference}` :
-        `/download/${details.photos[0].photo_reference}`,
+      photo: `/download/${details.photos[0].photo_reference}`,
       accessibility: details.wheelchair_accessible_entrance,
       hours: openingHours,
       place_id: place.place_id
