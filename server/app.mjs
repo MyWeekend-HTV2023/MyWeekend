@@ -7,9 +7,9 @@ import "./util/loadEnvironment.mjs";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import { Itinerary, ItineraryItem, User, getClient } from "./model/model.mjs";
-import { Budget, GroupSize, Interest } from "./../api/api.mjs";
+import { Budget, GroupSize, Interest, PositionType } from "./../api/api.mjs";
 import { generateDayItinerary } from "./util/chatgpt.mjs";
-import { findPlace, getPlaceDetails } from "./util/googlemaps.mjs";
+import { findPlace, getAddressFromCoords, getCoordsFromAddress, getPlaceDetails } from "./util/googlemaps.mjs";
 import MongoStore from "connect-mongo";
 import cors from "cors";
 import downloadImage from "./util/file.mjs";
@@ -109,14 +109,29 @@ app.delete("/api/logout/", function (req, res, next) {
   }
 );
 
-app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']).notEmpty(), 
+app.post("/api/generate/", body(['position', 'position.position', 'position.positionType', 
+        'interests', 'budget', 'groupSize']).notEmpty(), 
         body('budget').isIn(Object.keys(Budget)), body('groupSize').isIn(Object.keys(GroupSize)),
-        body('interests.*').isIn(Object.keys(Interest)), async function (req, res, next) {
+        body('interests.*').isIn(Object.keys(Interest)),
+        body('position.positionType').isIn(Object.keys(PositionType)), async function (req, res, next) {
   if (!validationResult(req).isEmpty()) {
     return res.status(400).json(validationResult(req).array()).end();
   }
 
-  const itineraryText = await generateDayItinerary(req.body.position, req.body.interests, 
+  // Geolocation and Reverse Geolocation
+  let coordinates = req.body.position.position;
+  let address = req.body.position.position;
+  if (req.body.position.positionType == PositionType.COORDINATES) {
+    address = await getAddressFromCoords(req.body.position.position);
+  } else  {
+    coordinates = await getCoordsFromAddress(req.body.position.position);
+  }
+  if (address == null || coordinates == null) {
+    return res.status(400).end("Bad location!");
+  }
+
+  // Generate ChatGPT Suggestions
+  const itineraryText = await generateDayItinerary(address, req.body.interests, 
     req.body.budget, req.body.groupSize);
   const itinerary = JSON.parse(itineraryText);
   if (!itinerary || !itinerary.places || !(itinerary.places instanceof Array)) {
@@ -128,7 +143,7 @@ app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']
       res.sendStatus(500).end("Error generating itinerary!");
     }
 
-    const place = await findPlace(req.body.position, suggestion.name);
+    const place = await findPlace(coordinates, suggestion.name);
     if (!place || !place.place_id) {
       continue;
     }
@@ -149,9 +164,16 @@ app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']
         details.wheelchair_accessible_entrance = false;
     }
 
-    // weekday = new Date().getDay(); // 0 = sunday -> 6 = saturday
+    let weekday = new Date().getDay() - 1; // 0 = sunday -> 6 = saturday
+    if (weekday < 0) {
+      weekday = 6;
+    }
 
-    // TODO Add opening/closing hours...
+    let openingHours = 'Hours Unknown';
+    if (details.current_opening_hours && details.current_opening_hours.weekday_text) {
+      openingHours = details.current_opening_hours.weekday_text[weekday]; // 0 = monday -> 6 = sunday
+    }
+
     finalPlaces.push({
       _id: nanoid(12),
       name: details.name,
@@ -161,16 +183,16 @@ app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']
       website: details.website,
       photo: `/api/download/${details.photos[0].photo_reference}`,
       accessibility: details.wheelchair_accessible_entrance,
-      // hours: details.current_opening_hours.weekday_text[weekday] // 0 = monday -> 6 = sunday
+      hours: openingHours
     })
   }
 
-  console.log(finalPlaces);
+  // console.log(finalPlaces);
   req.session.generate = finalPlaces;
-  res.status(204).end();
+  res.status(200).json(finalPlaces).end();
 });
 
-app.get("/get/refine/", async function (req, res, next) {
+app.get("/api/refine/", async function (req, res, next) {
   if (!validationResult(req).isEmpty()) {
     return res.status(400).json(validationResult(req).array()).end();
   }

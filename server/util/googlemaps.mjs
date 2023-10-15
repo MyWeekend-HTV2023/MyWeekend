@@ -2,12 +2,12 @@ import {Client} from "@googlemaps/google-maps-services-js";
 
 const client = new Client({});
 
-export async function findPlace(position, name) {
+export async function findPlace(coordinates, name) {
   const res = await client.findPlaceFromText({
     params: {
       input: name,
       inputtype: 'textquery',
-      locationbias: `point:${position.lat},${position.lng}`,
+      locationbias: `point:${coordinates.lat},${coordinates.lng}`,
       key: process.env.GOOGLE_MAPS_API_KEY_1,
     },
     timeout: 1000,
@@ -56,7 +56,7 @@ export async function getAddressFromCoords(coordinates) {
     // console.log(res.data);
     return null;
   }
-  result = res.data.results[0];
+  const result = res.data.results[0];
   if (!result) {
     return null;
   }
@@ -92,7 +92,7 @@ export async function getCoordsFromAddress(address) {
     // console.log(res.data);
     return null;
   }
-  result = res.data.results[0];
+  const result = res.data.results[0];
   if (!result || !result.geometry || !result.geometry.location) {
     return null;
   }

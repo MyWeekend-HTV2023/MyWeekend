@@ -38,8 +38,8 @@ export class RefineRequest {
 }
 
 export const PositionType = {
-    STRING: 'string',
-    COORDINATES: 'coordinates'
+    STRING: 'STRING',
+    COORDINATES: 'COORDINATES'
 }
 
 export class Position {

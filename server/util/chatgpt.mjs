@@ -16,7 +16,7 @@ const api = new ChatGPTAPI({
   }
 })
 
-export async function generateDayItinerary(position, interests, budget, groupSize) {
+export async function generateDayItinerary(address, interests, budget, groupSize) {
   var interestsString = ''
   for (const interest of interests) {
     if (!Interest[interest]) {
@@ -26,13 +26,8 @@ export async function generateDayItinerary(position, interests, budget, groupSiz
     if (interest != interests[interests.length - 1]) interestsString += ", "
   }
 
-  const positionString = position.position;
-  if (position.positionType == PositionType.COORDINATES) {
-    positionString = await getAddressFromCoords(position.position)
-  }
-
   const res = await api.sendMessage(`My current interests are ${interestsString}. `+
-  `${Budget[budget].message} ${GroupSize[groupSize].message} Find me 10 places to go in ${positionString}.`, 
+  `${Budget[budget].message} ${GroupSize[groupSize].message} Find me 10 places to go in ${address}.`, 
   {systemMessage: SYSTEM_MESSAGE})
 
   // console.log(res.text)
