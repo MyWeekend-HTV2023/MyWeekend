@@ -17,17 +17,23 @@ export const Budget = {
 }
 
 export const GroupSize = {
-    SOLO: ('SOLO'),
-    DUO: ('DUO'),
-    GROUP: ('GROUP')
+    SOLO: {id: 'SOLO', message: 'I am traveling alone, so try to add places that are good for one person.'},
+    DUO: {id: 'DUO', message: 'I am traveling with another person, so try to add places that can be enjoyed together.'},
+    GROUP: {id: 'GROUP', message: 'I am traveling as a group, so try to add places that can be anjoyed as a group.'},
 }
 
-export class DayItineraryRequest {
+export class GenerateRequest {
     constructor(position, interests, budget, groupSize) {
         this.position = position; // Position
         this.interests = interests; // [Interest]
         this.budget = budget; // Budget
         this.groupSize = groupSize; // GroupSize
+    }
+}
+
+export class RefineRequest {
+    constructor(placeIDs) {
+        this.placeIDs = placeIDs; // [_id]
     }
 }
 
@@ -43,5 +49,11 @@ export class Position {
     }
 }
 
-export function generateDayItinerary(DayItineraryRequest, callback) {
+export function generate(GenerateRequest, callback) {
+    "POST /api/generate/";
 }
+
+export function refine(GenerateRequest, callback) {
+    "POST /api/refine/";
+}
+
