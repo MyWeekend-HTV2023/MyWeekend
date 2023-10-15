@@ -58,7 +58,7 @@ export const ItineraryItem = mongoose.model('ItineraryItem', itineraryItemSchema
 let itinerary = new mongoose.Schema({
   user_id: {
     type: String,
-    required: true
+    required: false
   },
   places: {
       type: [itineraryItemSchema],

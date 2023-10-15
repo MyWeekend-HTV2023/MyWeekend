@@ -24,16 +24,12 @@ app.use(cors({
   credentials: true,
   exposedHeaders: ['SET-COOKIE']
 }));
-// app.use(cors());
 app.use(express.static('./api/download/'));
 
 // Setup express-session
 var sess = {
   secret: process.env.SESSION_SECRET,
   cookie: {
-    //sameSite: 'none',
-    //trust_proxy: true,
-    //secure: true,
   },
   saveUninitialized: true,
   resave: false,
@@ -44,7 +40,7 @@ var sess = {
     collection: 'session'
 })
 }
-app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1)
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
@@ -197,10 +193,6 @@ app.post("/api/generate/", body(['position', 'position.position', 'position.posi
 });
 
 app.get("/api/refine/", async function (req, res, next) {
-  if (!validationResult(req).isEmpty()) {
-    return res.status(400).json(validationResult(req).array()).end();
-  }
-
   if (!req.session.generate) {
     return res.sendStatus(404).end();
   }
@@ -224,23 +216,19 @@ app.post("/api/refine/", body(['placeIDs']).notEmpty().isArray(), async function
   }
   delete req.session.generate;
 
-  if (req.session.user_id) {
-    saveItinerary(req.session.user_id, itinerary);
-  } else {
-    req.session.itinerary = itinerary;
-  }
-  console.log(itinerary);
+  itinerary = await saveItinerary(req.session.user_id, itinerary);
+  // console.log(itinerary);
   res.status(200).json(itinerary).end();
 });
+
+async function saveItinerary(user_id, itinerary) {
+  return await Itinerary.create({user_id: user_id, places: itinerary, likes: 0});
+}
 
 app.get("/api/itineraries/", async function (req, res, next) {
   const itineraries = await Itinerary.find().sort({likes: -1, _id: -1}).limit(10).exec();
   res.status(200).json({"itineraries": itineraries}).end();
 });
-
-async function saveItinerary(user_id, itinerary) {
-  await Itinerary.create({user_id: user_id, places: itinerary, likes: 0});
-}
 
 app.get("/api/picture/:id", async function (req, res, next) {
   const user = await User.findById(req.session.user_id);
