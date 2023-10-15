@@ -1,5 +1,5 @@
 import { ChatGPTAPI } from "chatgpt"
-import { Budget, Interest, PositionType } from "../api/api.mjs"
+import { Budget, GroupSize, Interest, PositionType } from "../../api/api.mjs"
 
 const SYSTEM_MESSAGE =  "You are my personal assistant that recommends "+
 "places to go based on my interests, specific location, and the budget of what I "+
@@ -28,11 +28,11 @@ export async function generateDayItinerary(position, interests, budget, groupSiz
 
   const positionString = position.position;
   if (position.positionType == PositionType.COORDINATES) {
-    // TODO Get position string...
+    positionString = await getAddressFromCoords(position.position)
   }
 
   const res = await api.sendMessage(`My current interests are ${interestsString}. `+
-  `${Budget[budget].message}. Find me 10 places to go in ${positionString}.`, 
+  `${Budget[budget].message} ${GroupSize[groupSize].message} Find me 10 places to go in ${positionString}.`, 
   {systemMessage: SYSTEM_MESSAGE})
 
   // console.log(res.text)

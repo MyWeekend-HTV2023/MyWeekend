@@ -2,28 +2,38 @@ import { createServer, get } from "http";
 import express from "express";
 import { rmSync, unlink } from "fs";
 import { body, param, validationResult, query} from "express-validator";
-import "./loadEnvironment.mjs";
+import "./util/loadEnvironment.mjs";
 // import db from "./db/conn.mjs";
 import session from "express-session";
 import bcrypt from "bcrypt";
-import { ItineraryItem, User, getClient } from "./model/model.mjs";
-import { Budget, GroupSize, Interest } from "../api/api.mjs";
-import { generateDayItinerary } from "./chatgpt.mjs";
-import { findPlace, getPlaceDetails } from "./googlemaps.mjs";
+import { Itinerary, ItineraryItem, User, getClient } from "./model/model.mjs";
+import { Budget, GroupSize, Interest } from "./../api/api.mjs";
+import { generateDayItinerary } from "./util/chatgpt.mjs";
+import { findPlace, getPlaceDetails } from "./util/googlemaps.mjs";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+import downloadImage from "./util/file.mjs";
+import { nanoid } from 'nanoid';
 
 const PORT = 3000;
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// app.use(cors({
+//   origin: "http://localhost:3000",
+//   methods: ["POST", "PUT", "GET", "DELETE"],
+//   credentials: true,
+// }));
 app.use(cors());
+app.use(express.static('./api/download/'));
 
 // Setup express-session
 var sess = {
   secret: process.env.SESSION_SECRET,
-  cookie: {},
-  saveUninitialized: false,
+  cookie: {
+    secure: false,
+  },
+  saveUninitialized: true,
   resave: false,
   store: new MongoStore({
     client: getClient(),
@@ -72,7 +82,12 @@ app.post("/api/register/", body(['username', 'password']).notEmpty(), async func
   
   user = await User.create({username: req.body.username, password: hash})
   req.session.user_id = user._id;
-  res.status(201).json(user).end();
+
+  if (req.session.itinerary) {
+    saveItinerary(req.session.user_id, req.session.itinerary);
+    delete req.session.itinerary;
+  }
+  res.sendStatus(201).end();
 });
 
 app.get("/api/user/", async function (req, res, next) {
@@ -94,7 +109,7 @@ app.delete("/api/logout/", function (req, res, next) {
   }
 );
 
-app.get("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']).notEmpty(), 
+app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']).notEmpty(), 
         body('budget').isIn(Object.keys(Budget)), body('groupSize').isIn(Object.keys(GroupSize)),
         body('interests.*').isIn(Object.keys(Interest)), async function (req, res, next) {
   if (!validationResult(req).isEmpty()) {
@@ -113,7 +128,7 @@ app.get("/api/generate/", body(['position', 'interests', 'budget', 'groupSize'])
       res.sendStatus(500).end("Error generating itinerary!");
     }
 
-    const place = await findPlace(suggestion.name);
+    const place = await findPlace(req.body.position, suggestion.name);
     if (!place || !place.place_id) {
       continue;
     }
@@ -125,20 +140,76 @@ app.get("/api/generate/", body(['position', 'interests', 'budget', 'groupSize'])
       continue;
     }
 
-    // TODO Optimize this, insert in bulk.
-    const finalPlace = await ItineraryItem.create({
+    downloadImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400`+
+      `&photoreference=${details.photos[0].photo_reference}`+
+      `&key=${process.env.GOOGLE_MAPS_API_KEY_1}`,
+    `./api/download/download/${details.photos[0].photo_reference}`)
+
+    if (!details.wheelchair_accessible_entrance) {
+        details.wheelchair_accessible_entrance = false;
+    }
+
+    finalPlaces.push({
+      _id: nanoid(12),
       name: details.name,
       description: suggestion.description,
       rating: details.rating,
       address: details.formatted_address,
       website: details.website,
-      photo: details.photos[0].photo_reference
-    });
-
-    finalPlaces.push(finalPlace)
+      photo: `/api/download/${details.photos[0].photo_reference}`,
+      wheelchair: details.wheelchair_accessible_entrance 
+    })
   }
+
+  console.log(finalPlaces);
+  req.session.generate = finalPlaces;
   res.status(200).json(finalPlaces).end();
 });
+
+app.post("/api/refine/", body(['placeIDs']).notEmpty().isArray(), async function (req, res, next) {
+  if (!validationResult(req).isEmpty()) {
+    return res.status(400).json(validationResult(req).array()).end();
+  }
+
+  if (!req.session.generate) {
+    return res.sendStatus(404).end();
+  }
+
+  const itinerary = [];
+  for (const generateItem of req.session.generate) {
+    if (req.body.placeIDs.includes(generateItem._id)) {
+      itinerary.push(generateItem);
+    }
+  }
+  delete req.session.generate;
+
+  if (req.session.user_id) {
+    saveItinerary(req.session.user_id, itinerary);
+  } else {
+    req.session.itinerary = itinerary;
+  }
+  console.log(itinerary);
+  res.status(200).json(itinerary).end();
+});
+
+app.get("/api/itineraries/", async function (req, res, next) {
+  const itineraries = await Itinerary.find().sort({likes: -1, _id: -1}).limit(10).exec();
+  res.status(200).json({"itineraries": itineraries}).end();
+});
+
+async function saveItinerary(user_id, itinerary) {
+  await Itinerary.create({user_id: user_id, places: itinerary, likes: 0});
+}
+
+app.get("/api/picture/:id", async function (req, res, next) {
+  const user = await User.findById(req.session.user_id);
+  if (!user) {
+    req.session.destroy();
+    return res.status(401).end("User not authenticated!");
+  }
+  res.status(200).json({username: user.username}).end();
+  }
+);
 
 export const server = createServer(app).listen(PORT, function (err) {
   if (err) console.log(err);

@@ -46,10 +46,31 @@ let itineraryItemSchema = new mongoose.Schema({
   photo: {
     type: String,
     required: true
+  },
+  wheelchair: {
+    type: Boolean,
+    required: true
   }
 });
 
 export const ItineraryItem = mongoose.model('ItineraryItem', itineraryItemSchema);
+
+let itinerary = new mongoose.Schema({
+  user_id: {
+    type: String,
+    required: true
+  },
+  places: {
+      type: [itineraryItemSchema],
+      required: true
+  },
+  likes: {
+    type: Number,
+    required: true
+  }
+});
+
+export const Itinerary = mongoose.model('Itinerary', itinerary);
 
 export function getClient() {
   return mongoose.connection.getClient();
