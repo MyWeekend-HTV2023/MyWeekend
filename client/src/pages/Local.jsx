@@ -2,23 +2,24 @@ import { React, useState }from 'react'
 import logo from '../assets/logo.png'
 import Typewriter from './components/Typewriter.jsx'
 
-import { Interest, Budget, GroupSize, DayItineraryRequest, Position, PositionType} from '../../../api/api.mjs';
+import { Interest, Budget, GroupSize, GenerateRequest, Position, PositionType} from '../../../api/api.mjs';
 import { useNavigate } from 'react-router-dom';
 
 
 
 function Local() {
   const [location, setLocation] = useState(null);
+  const [type, setLocationType] = useState(null);
   const [price, setPrice] = useState(null);
   const [interests, setInterests] = useState([]);
   const [group, setGroup] = useState(null);
-  
+
   const navigate = useNavigate();
 
   function send() {
-    let position = new Position("STRING","Toronto, Canada");
+    let position = new Position(type, location);
 
-    let request = new DayItineraryRequest(position, interests, price, GroupSize[group]);
+    let request = new GenerateRequest(position, interests, price, group);
     console.log({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
     fetch('http://localhost:3000/api/generate/', {
       method: 'POST',
@@ -27,7 +28,8 @@ function Local() {
       },
       body: JSON.stringify({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
     }).then(response => {
-      if (response.status === 200) {
+      if (response.status === 201) {
+        console.log("Success");
         navigate('/chooselocation');
       } else {
         window.alert("Invalid credentials");
@@ -40,10 +42,17 @@ function Local() {
   const handleGroup = (str) => {
     setGroup(str)
   }
+  
+  const submitLocation = (e, location) => {
+    e.preventDefault();
+    setLocationType("STRING");
+    setLocation(location);
+  }
 
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
+      document.getElementById('location').reset()
     } else { 
       alert("Geolocation is not supported by this browser.");
     }
@@ -51,11 +60,13 @@ function Local() {
 
   const showPosition = (position) => {
     setLocation({"lat": position.coords.latitude, "lng": position.coords.longitude});
+    setLocationType("COORDINATES");
   }
 
-  const printTest = () => {
+  const printTest = (e) => {
+    e.preventDefault();
     const filter = interests.map((interest) => Interest[interest]);
-    let position = new Position( PositionType.COORDINATES,location);
+    let position = new Position( type,location);
     console.log(position, Budget[price], filter, GroupSize[group]);
   }
 
@@ -96,7 +107,11 @@ function Local() {
       <div class="p-2 bg-gray-300 flex items-center flex-col rounded-lg shadow-2xl">
         <div class="p-2">
           <div class="flex justify-center text-2xl p-2">
-            <button onClick={getLocation}>Share Location</button>
+            <button onClick={getLocation} class="">Share GeoLocation</button>
+            <form id='location' onSubmit={(e) => submitLocation(e, location)}>
+              <input id='location-search' type="text" onChange={(e) => setLocation(e.target.value)} required/>
+              <button type="submit">Submit</button>
+            </form>
           </div>
         <div class='absolute invisible'>
           <ul class="grid w-full gap-6 md:grid-cols-3">

@@ -189,7 +189,7 @@ app.post("/api/generate/", body(['position', 'position.position', 'position.posi
 
   // console.log(finalPlaces);
   req.session.generate = finalPlaces;
-  res.status(200).json(finalPlaces).end();
+  res.status(201).json(finalPlaces).end();
 });
 
 app.get("/api/refine/", async function (req, res, next) {
