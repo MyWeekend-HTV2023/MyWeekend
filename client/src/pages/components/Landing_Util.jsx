@@ -17,32 +17,6 @@ function Taskbar(){
         navigate('/signup');
     };
     return(
-        // <div className="taskbar">
-        //     <div className="info">
-        //         <img classname='w-20'src={logo}/>
-        //         <div className="title shadow-altlogopink drop-shadow-2xl text-5xl">MyWeekend</div>
-        //     </div>
-        //     <div className="buttons">
-        //         <a class= "flex px-2 text-white justify-center items-center py-5" href='#dashboard'>
-        //             <button class="border-b border-logopink group relative h-10 w-40 overflow-hidden rounded-lg bg-white text-lg shadow">
-        //             <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-        //             <span class="relative  text-2xl text-black group-hover:text-white">Dashboard</span>
-        //             </button>
-        //         </a>
-        //         <a class= "flex px-2 text-white justify-center items-center py-5" href='/signup'>
-        //             <button class="border-b border-logopink group relative h-10 w-40 overflow-hidden rounded-lg bg-white text-lg shadow">
-        //             <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-        //             <span class="relative  text-2xl text-black group-hover:text-white">Sign Up</span>
-        //             </button>
-        //         </a>
-        //         <a class= "flex px-2 text-white justify-center items-center py-5" href='/login'>
-        //             <button class="border-b border-logopink group relative h-10 w-40 overflow-hidden rounded-lg bg-white text-lg shadow">
-        //             <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-        //             <span class="relative  text-2xl text-black group-hover:text-white">Log In</span>
-        //             </button>
-        //         </a>
-        //     </div>
-        // </div>
         <div class='bg-cover flex flex-col items-center border-gray-200 bg-gray-900 '>
         <div class="inline-flex items-center w-full justify-between">
       <div class="flex p-4">
@@ -122,20 +96,14 @@ function Info(){
                 <button onClick={navigateToLocal}>Local Trip</button>
                 <button onClick={navigateToAbroad}>Abroad Trip</button>
             </div> */}
-            <div class="text-5xl flex flex-row">
+            <div class="text-6xl flex flex-row">
                 <div class = 'px-20'>
-                    <a class="flex p-5 rounded-lg flex-row bg-[#53c6fb]"href="/local">
+                    <a class="hover:bg-blue-300 flex p-5 rounded-lg flex-row bg-[#53c6fb]"href="/local">
                         <img class="px-2 h-10" src="https://cdn.pixabay.com/photo/2014/03/25/16/31/stick-man-297255_1280.png"></img>
-                        Plan a Local Trip
+                        Plan a Trip
+                        <img class="h-10"src="https://static.vecteezy.com/system/resources/previews/021/286/390/original/aeroplane-airplane-icon-on-transparent-background-free-png.png"></img>
                     </a>
                 </div>
-                <div class = 'px-20'>
-                    <button class="flex p-5 rounded-lg flex-row bg-[#53c6fb]" href="/abroad">
-                        Plan Trip Abroad
-                        <img class="h-10"src="https://static.vecteezy.com/system/resources/previews/021/286/390/original/aeroplane-airplane-icon-on-transparent-background-free-png.png"></img>
-                    </button>
-                </div>
-
             </div>
         </div>
         </section>
