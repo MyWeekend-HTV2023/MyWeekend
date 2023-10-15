@@ -80,6 +80,7 @@ function ChooseLocation() {
         response.json().then((data) => {
           setLocations(data.places);
           console.log(data.places);
+          setUser("");
         });
       } else {
         navigate('/');
@@ -105,7 +106,7 @@ function ChooseLocation() {
     }).then((response) => {
       if (response.status === 200) {
         response.json().then((data) => {
-          //navigate('/itinerary');
+          navigate('/localresult?itineraryID=' + data._id);
           console.log(data);
         });
       } else {

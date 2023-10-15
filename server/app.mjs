@@ -150,7 +150,7 @@ app.post("/api/generate/", body(['position', 'position.position', 'position.posi
     if (!details) {
       continue;
     }
-    if (details.business_status != "OPERATIONAL") {
+    if (details.business_status != "OPERATIONAL" || !details.photos) {
       continue;
     }
 
@@ -208,7 +208,7 @@ app.post("/api/refine/", body(['placeIDs']).notEmpty().isArray(), async function
     return res.sendStatus(404).end();
   }
 
-  const itinerary = [];
+  let itinerary = [];
   for (const generateItem of req.session.generate) {
     if (req.body.placeIDs.includes(generateItem._id)) {
       itinerary.push(generateItem);

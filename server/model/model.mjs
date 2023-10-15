@@ -41,7 +41,7 @@ let itineraryItemSchema = new mongoose.Schema({
   },
   website: {
     type: String,
-    required: true
+    required: false
   },
   photo: {
     type: String,
@@ -49,6 +49,14 @@ let itineraryItemSchema = new mongoose.Schema({
   },
   accessibility: {
     type: Boolean,
+    required: true
+  },
+  hours: {
+    type: String,
+    required: true
+  },
+  place_id: {
+    type: String,
     required: true
   }
 });
