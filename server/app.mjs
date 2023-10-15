@@ -6,7 +6,7 @@ import "./util/loadEnvironment.mjs";
 // import db from "./db/conn.mjs";
 import session from "express-session";
 import bcrypt from "bcrypt";
-import { Itinerary, ItineraryItem, User, getClient } from "./model/model.mjs";
+import { Itinerary, ItineraryItem, ItineraryLike, User, getClient } from "./model/model.mjs";
 import { Budget, GroupSize, Interest, PositionType } from "./../api/api.mjs";
 import { generateDayItinerary } from "./util/chatgpt.mjs";
 import { findPlace, getAddressFromCoords, getCoordsFromAddress, getPlaceDetails } from "./util/googlemaps.mjs";
@@ -137,22 +137,37 @@ app.post("/api/generate/", body(['position', 'position.position', 'position.posi
   if (!itinerary || !itinerary.places || !(itinerary.places instanceof Array)) {
     res.sendStatus(500).end("Error generating itinerary!");
   }
-  const finalPlaces = [];
+  const promises = [];
   for (const suggestion of itinerary.places) {
+    promises.push(resolvePlace(coordinates, suggestion));
+    console.log(Date.now());
+  }
+  await Promise.all(promises).then((values) => {
+    const finalPlaces = [];
+    for (const value of values) {
+      if (value) {
+        finalPlaces.push(value);
+      }
+    }
+    req.session.generate = finalPlaces;
+    res.status(201).json(finalPlaces).end();
+  });
+});
+
+function resolvePlace(coordinates, suggestion) {
+  return new Promise( async (resolve) => {
     if (!suggestion.name || !suggestion.description || Object.keys(suggestion).length != 2) {
-      res.sendStatus(500).end("Error generating itinerary!");
+      // res.sendStatus(500).end("Error generating itinerary!").end();
+      return resolve(null);
     }
 
     const place = await findPlace(coordinates, suggestion.name);
     if (!place || !place.place_id) {
-      continue;
+      return resolve(null);
     }
     const details = await getPlaceDetails(place.place_id);
-    if (!details) {
-      continue;
-    }
-    if (details.business_status != "OPERATIONAL" || !details.photos) {
-      continue;
+    if (!details || !details.photos || details.business_status != "OPERATIONAL") {
+      return resolve(null);
     }
 
     downloadImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400`+
@@ -174,24 +189,22 @@ app.post("/api/generate/", body(['position', 'position.position', 'position.posi
       openingHours = details.current_opening_hours.weekday_text[weekday]; // 0 = monday -> 6 = sunday
     }
 
-    finalPlaces.push({
+    return resolve({
       _id: nanoid(12),
       name: details.name,
       description: suggestion.description,
       rating: details.rating,
       address: details.formatted_address,
       website: details.website,
-      photo: `http://localhost:3000/download/${details.photos[0].photo_reference}`,
+      photo: window.location.href.startsWith("http://localhost") ? 
+        `http://localhost:3000/download/${details.photos[0].photo_reference}` :
+        `/download/${details.photos[0].photo_reference}`,
       accessibility: details.wheelchair_accessible_entrance,
       hours: openingHours,
       place_id: place.place_id
     })
-  }
-
-  // console.log(finalPlaces);
-  req.session.generate = finalPlaces;
-  res.status(201).json(finalPlaces).end();
-});
+  });
+}
 
 app.get("/api/refine/", async function (req, res, next) {
   if (!req.session.generate) {
@@ -229,6 +242,26 @@ async function saveItinerary(user_id, itinerary) {
 app.get("/api/itineraries/", async function (req, res, next) {
   const itineraries = await Itinerary.find().sort({likes: -1, _id: -1}).limit(10).exec();
   res.status(200).json({"itineraries": itineraries}).end();
+});
+
+app.patch("/api/itinerary/like/", body('itinerary_id', 'user_id').notEmpty(), async function (req, res, next) {
+  if (!validationResult(req).isEmpty()) {
+    return res.status(400).json(validationResult(req).array()).end();
+  }
+  
+  let like = await ItineraryLike.findOne({user_id: req.body.user_id, itinerary_id: req.body.itinerary_id});
+  let liked = !like;
+  if (!like) {
+    like = await ItineraryLike.create({user_id: req.body.user_id, itinerary_id: req.body.itinerary_id});
+  } else {
+    ItineraryLike.findByIdAndDelete(like._id).exec();
+  }
+
+  // const count = await ItineraryLike.findById(req.body.itinerary_id).count().exec();
+  const itinerary = await Itinerary.findOneAndUpdate({itinerary_id: req.body.itinerary_id}, {$inc: {likes: liked ? 1 : -1}}, {
+    new: true
+  });
+  res.status(200).json({itinerary: itinerary, liked: liked}).end();
 });
 
 app.get("/api/picture/:id", async function (req, res, next) {

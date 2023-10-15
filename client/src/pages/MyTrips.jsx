@@ -7,7 +7,7 @@ function MyTrips() {
   const [itineraries, setItineraries] = useState([]);
   const [username, setUsername] = useState(null);
   useEffect(() => {
-    fetch('http://localhost:3000/api/itineraries/')
+    fetch(window.location.href.startsWith("http://localhost") ? 'http://localhost:3000/api/itineraries/' : '/api/itineraries/')
     .then((res) => res.json())  
     .then((data) => {
         setItineraries(data.itineraries)

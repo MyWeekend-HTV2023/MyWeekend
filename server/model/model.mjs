@@ -80,6 +80,19 @@ let itinerary = new mongoose.Schema({
 
 export const Itinerary = mongoose.model('Itinerary', itinerary);
 
+let itineraryLike = new mongoose.Schema({
+  itinerary_id: {
+    type: String,
+    required: true
+  },
+  user_id: {
+    type: String,
+    required: true
+  }
+});
+
+export const ItineraryLike = mongoose.model('ItineraryLike', itineraryLike);
+
 export function getClient() {
   return mongoose.connection.getClient();
 }

@@ -40,12 +40,15 @@ function getPlaces(num){
     const itineraryID = new URLSearchParams(window.location.search).get("itineraryID");
     console.log(itineraryID);
 
-    fetch('http://localhost:3000/api/itinerary?itineraryID='+itineraryID, {
+    fetch(window.location.href.startsWith("http://localhost") ? 
+        'http://localhost:3000/api/itinerary?itineraryID='+itineraryID : 
+        '/api/itinerary?itineraryID='+itineraryID, {
     credentials: 'include',
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:3000'
+      'Access-Control-Allow-Origin': window.location.href.startsWith("http://localhost") ? 
+        'http://localhost:3000' : 'https://myweekend.app'
       }
     }).then((response) => {
         if (response.status === 200) {
