@@ -1,9 +1,20 @@
-import {React} from 'react'
+import {React, useEffect, useState} from 'react'
 import Typewriter from './components/Typewriter.jsx'
 import logo from '../assets/logo.png'
 
 function MyTrips() {
-  const itinararies = [
+  const [itinararies, setItineraries] = useState([]);
+  useEffect(() => {
+    fetch('https://localhost/3000/api/itineraries')
+    .then((res) => res.json())  
+    .then((data) => {
+        setItineraries(data)
+      })
+    .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+  const itinararies2 = [
     [{
       id: 1,
       name: "Canada's Wonderland",
@@ -22,6 +33,8 @@ function MyTrips() {
       rating: 4.6,
       hours: "9:00 AM - 10:00 PM"
     }]
+
+
   ]
 
   return (

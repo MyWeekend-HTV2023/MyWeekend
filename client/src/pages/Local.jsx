@@ -158,7 +158,7 @@ function Local() {
           </div>
           </div>
         <div class='p-3'>
-        <p class = "p-2 flex justify-center text-2xl">Price</p>
+        <p class = "p-2 flex justify-center text-2xl">Budget</p>
         <div>
           <ul class="grid w-full gap-6 md:grid-cols-4">
               {price == "FREE" ? (
