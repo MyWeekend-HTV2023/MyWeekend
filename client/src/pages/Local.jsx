@@ -22,9 +22,11 @@ function Local() {
     let request = new GenerateRequest(position, interests, price, group);
     console.log({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
     fetch('http://localhost:3000/api/generate/', {
+      credentials: 'include',
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
       },
       body: JSON.stringify({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
     }).then(response => {

@@ -19,19 +19,21 @@ const PORT = 3000;
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// app.use(cors({
-//   origin: "http://localhost:3000",
-//   methods: ["POST", "PUT", "GET", "DELETE"],
-//   credentials: true,
-// }));
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+  exposedHeaders: ['SET-COOKIE']
+}));
+// app.use(cors());
 app.use(express.static('./api/download/'));
 
 // Setup express-session
 var sess = {
   secret: process.env.SESSION_SECRET,
   cookie: {
-    secure: false,
+    //sameSite: 'none',
+    //trust_proxy: true,
+    //secure: true,
   },
   saveUninitialized: true,
   resave: false,
@@ -42,6 +44,7 @@ var sess = {
     collection: 'session'
 })
 }
+app.set('trust proxy', 1) // trust first proxy
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
@@ -181,9 +184,10 @@ app.post("/api/generate/", body(['position', 'position.position', 'position.posi
       rating: details.rating,
       address: details.formatted_address,
       website: details.website,
-      photo: `/api/download/${details.photos[0].photo_reference}`,
+      photo: `http://localhost:3000/download/${details.photos[0].photo_reference}`,
       accessibility: details.wheelchair_accessible_entrance,
-      hours: openingHours
+      hours: openingHours,
+      place_id: place.place_id
     })
   }
 
