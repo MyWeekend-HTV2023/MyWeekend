@@ -104,16 +104,29 @@ function Local() {
           </div>
           <img className="h-20 w-20 " src={logo} alt="MyWeekend Logo" />
         </div>
+
       <div class="p-2 bg-gray-300 flex items-center flex-col rounded-lg shadow-2xl">
         <div class="p-2">
+
           <div class="flex justify-center text-2xl p-2">
-            <button onClick={getLocation} class="">Share GeoLocation</button>
-            <form id='location' onSubmit={(e) => submitLocation(e, location)}>
-              <input id='location-search' type="text" onChange={(e) => setLocation(e.target.value)} required/>
-              <button type="submit">Submit</button>
-            </form>
+            <div class='grid grid-cols-2'>
+              <div class='inline-flex items-center justify-between'>
+              <button onClick={getLocation} class="bg-blue-300 inline-flex p-2 rounded-xl">
+                <p class='px-2'>Share GeoLocation</p>
+                <img class="h-7 w-7"src="https://cdn4.iconfinder.com/data/icons/materia-social-free/24/038_028_share_link_friends_send_android_material-512.png"></img>
+              </button>
+              </div>
+            <div class=''>
+              <form id='location' onSubmit={(e) => submitLocation(e, location)}>
+                <input id='location-search' class='p-2 rounded-tl-xl rounded-bl-xl' type="text" onChange={(e) => setLocation(e.target.value)} required/>
+                <button class='bg-blue-300 p-2 rounded-tr-xl rounded-br-xl' type="submit">Submit</button>
+              </form>
+            </div>
+            </div>
           </div>
+
         <div class='absolute invisible'>
+
           <ul class="grid w-full gap-6 md:grid-cols-3">
               <li>
                   <input type="radio" id="react-option" value="" class="hidden peer" required=""></input>
