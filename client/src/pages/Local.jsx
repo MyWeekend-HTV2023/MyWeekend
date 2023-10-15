@@ -2,10 +2,37 @@ import { React, useState }from 'react'
 import logo from '../assets/logo.png'
 import Typewriter from './components/Typewriter.jsx'
 
+import { Interest, Budget, GroupSize, DayItineraryRequest, Position, PositionType} from '../../../api/api.mjs';
+import { useNavigate } from 'react-router-dom';
+
+
+
 function Local() {
+  const [location, setLocation] = useState(null);
   const [price, setPrice] = useState(null);
   const [interests, setInterests] = useState([]);
   const [group, setGroup] = useState(null);
+  
+  const navigate = useNavigate();
+
+  function send() {
+    let position = new Position("STRING","Toronto, Canada");
+
+    let request = new DayItineraryRequest(position, interests, price, GroupSize[group]);
+    console.log({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
+    fetch('http://localhost:3000/api/generate/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({position: request.position, interests: request.interests, budget: request.budget, groupSize: request.groupSize})
+    }).then(response => {
+      if (response.status === 200) {
+        navigate('/chooselocation');
+      } else {
+        window.alert("Invalid credentials");
+      }});
+  }
 
   const handlePrice = (str) => {
     setPrice(str)
@@ -13,6 +40,25 @@ function Local() {
   const handleGroup = (str) => {
     setGroup(str)
   }
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  const showPosition = (position) => {
+    setLocation({"lat": position.coords.latitude, "lng": position.coords.longitude});
+  }
+
+  const printTest = () => {
+    const filter = interests.map((interest) => Interest[interest]);
+    let position = new Position( PositionType.COORDINATES,location);
+    console.log(position, Budget[price], filter, GroupSize[group]);
+  }
+
 
   return (
     <div class="min-h-screen bg-cover flex flex-col items-center border-gray-200 bg-gray-900 ">
@@ -49,6 +95,9 @@ function Local() {
         </div>
       <div class="p-2 bg-gray-300 flex items-center flex-col rounded-lg shadow-2xl">
         <div class="p-2">
+          <div class="flex justify-center text-2xl p-2">
+            <button onClick={getLocation}>Share Location</button>
+          </div>
         <div class='absolute invisible'>
           <ul class="grid w-full gap-6 md:grid-cols-3">
               <li>
@@ -408,8 +457,8 @@ function Local() {
             </ul>
           </div>
           </div>
-        <a class= "flex text-white justify-center items-center py-5" href='/abroad'>
-        <button class="border-b border-logopink group relative h-20 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
+        <a class= "flex text-white justify-center items-center py-5">
+        <button onClick={send} class="border-b border-logopink group relative h-20 w-80 overflow-hidden rounded-lg bg-white text-lg shadow">
           <div class="absolute inset-0 w-3 bg-logopink transition-all duration-[250ms] ease-out group-hover:w-full"></div>
           <span class="relative  text-2xl text-black group-hover:text-white">Plan my weekend!</span>
         </button>

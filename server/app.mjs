@@ -94,7 +94,7 @@ app.delete("/api/logout/", function (req, res, next) {
   }
 );
 
-app.get("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']).notEmpty(), 
+app.post("/api/generate/", body(['position', 'interests', 'budget', 'groupSize']).notEmpty(), 
         body('budget').isIn(Object.keys(Budget)), body('groupSize').isIn(Object.keys(GroupSize)),
         body('interests.*').isIn(Object.keys(Interest)), async function (req, res, next) {
   if (!validationResult(req).isEmpty()) {
